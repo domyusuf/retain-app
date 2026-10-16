@@ -75,14 +75,12 @@ export function authenticate(db) {
       )
       .get(hashToken(token), Date.now());
     if (!user)
-      return res
-        .status(401)
-        .json({
-          error: {
-            code: 'UNAUTHENTICATED',
-            message: 'Your session has ended. Please sign in again.',
-          },
-        });
+      return res.status(401).json({
+        error: {
+          code: 'UNAUTHENTICATED',
+          message: 'Your session has ended. Please sign in again.',
+        },
+      });
     req.user = publicUser(user);
     next();
   };

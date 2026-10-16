@@ -41,14 +41,12 @@ export function createApp({
   app.use('/api', (req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method) && req.headers.origin !== allowedOrigin) {
-      return res
-        .status(403)
-        .json({
-          error: {
-            code: 'ORIGIN_REJECTED',
-            message: 'This request did not come from the Retain app.',
-          },
-        });
+      return res.status(403).json({
+        error: {
+          code: 'ORIGIN_REJECTED',
+          message: 'This request did not come from the Retain app.',
+        },
+      });
     }
     next();
   });
@@ -77,14 +75,12 @@ export function createApp({
     if (!parsed.success) return invalid(res, parsed.error);
     const { name, email, password } = parsed.data;
     if (db.prepare('SELECT id FROM users WHERE email = ?').get(email)) {
-      return res
-        .status(409)
-        .json({
-          error: {
-            code: 'EMAIL_EXISTS',
-            message: 'An account with this email already exists. Try signing in.',
-          },
-        });
+      return res.status(409).json({
+        error: {
+          code: 'EMAIL_EXISTS',
+          message: 'An account with this email already exists. Try signing in.',
+        },
+      });
     }
     const { salt, hash } = await hashPassword(password);
     const id = newId();
@@ -94,14 +90,12 @@ export function createApp({
       ).run(id, name, email, hash, salt, new Date().toISOString());
     } catch (error) {
       if (error.code === 'ERR_SQLITE_ERROR' && /UNIQUE/.test(error.message)) {
-        return res
-          .status(409)
-          .json({
-            error: {
-              code: 'EMAIL_EXISTS',
-              message: 'An account with this email already exists. Try signing in.',
-            },
-          });
+        return res.status(409).json({
+          error: {
+            code: 'EMAIL_EXISTS',
+            message: 'An account with this email already exists. Try signing in.',
+          },
+        });
       }
       throw error;
     }
@@ -123,11 +117,9 @@ export function createApp({
       row?.password_hash || fallback.hash,
     );
     if (!row || !verified)
-      return res
-        .status(401)
-        .json({
-          error: { code: 'INVALID_CREDENTIALS', message: 'The email or password is incorrect.' },
-        });
+      return res.status(401).json({
+        error: { code: 'INVALID_CREDENTIALS', message: 'The email or password is incorrect.' },
+      });
     destroySession(db, req, res, production);
     createSession(db, res, row.id, sessionConfig);
     res.json({ user: publicUser(row) });
@@ -171,21 +163,17 @@ export function createApp({
         .status(413)
         .json({ error: { code: 'TOO_LARGE', message: 'This request is too large.' } });
     console.error('API request failed:', error.code || error.name);
-    res
-      .status(500)
-      .json({
-        error: { code: 'SERVER_ERROR', message: 'Something went wrong. Please try again.' },
-      });
+    res.status(500).json({
+      error: { code: 'SERVER_ERROR', message: 'Something went wrong. Please try again.' },
+    });
   });
   return app;
 }
 function invalid(res, error) {
-  return res
-    .status(400)
-    .json({
-      error: {
-        code: 'VALIDATION_ERROR',
-        message: error.issues[0]?.message || 'Please check the details you entered.',
-      },
-    });
+  return res.status(400).json({
+    error: {
+      code: 'VALIDATION_ERROR',
+      message: error.issues[0]?.message || 'Please check the details you entered.',
+    },
+  });
 }
