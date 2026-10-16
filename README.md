@@ -44,13 +44,13 @@ The account must already exist. Never use real banking credentials in this stude
 
 All responses are JSON. Error responses follow `{ "error": { "code": "...", "message": "..." } }`.
 
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| GET | `/api/health` | API and database health |
-| POST | `/api/auth/signup` | Create an account with name, email, password |
-| POST | `/api/auth/signin` | Sign in with email and password |
-| GET | `/api/auth/me` | Restore the current session |
-| POST | `/api/auth/signout` | Invalidate the current session |
-| GET | `/api/categories` | List expense categories for an authenticated user |
+| Method | Endpoint            | Purpose                                           |
+| ------ | ------------------- | ------------------------------------------------- |
+| GET    | `/api/health`       | API and database health                           |
+| POST   | `/api/auth/signup`  | Create an account with name, email, password      |
+| POST   | `/api/auth/signin`  | Sign in with email and password                   |
+| GET    | `/api/auth/me`      | Restore the current session                       |
+| POST   | `/api/auth/signout` | Invalidate the current session                    |
+| GET    | `/api/categories`   | List expense categories for an authenticated user |
 
 Authentication never returns password hashes or session tokens in JSON. The API accepts only the documented fields and rate limits authentication attempts.

@@ -54,7 +54,9 @@ export function openDatabase(filename = process.env.DATABASE_PATH || './data/ret
     );
     PRAGMA user_version = 1;
   `);
-  const seed = db.prepare('INSERT OR IGNORE INTO categories (id, name, color, is_default, created_at) VALUES (?, ?, ?, ?, ?)');
+  const seed = db.prepare(
+    'INSERT OR IGNORE INTO categories (id, name, color, is_default, created_at) VALUES (?, ?, ?, ?, ?)',
+  );
   const categories = [
     ['uncategorized', 'Uncategorized', '#6b7280', 1],
     ['food', 'Food & groceries', '#d49b49', 0],

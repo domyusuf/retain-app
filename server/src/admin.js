@@ -6,7 +6,9 @@ if (!email) {
 } else {
   const db = openDatabase();
   const result = db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(email);
-  if (result.changes === 0) { console.error('No account found. Create the account first.'); process.exitCode = 1; }
-  else console.log('Account promoted to admin.');
+  if (result.changes === 0) {
+    console.error('No account found. Create the account first.');
+    process.exitCode = 1;
+  } else console.log('Account promoted to admin.');
   db.close();
 }
