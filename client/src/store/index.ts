@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import filtersReducer from './filtersSlice';
+import financialReducer from './financialSlice';
 
-export const store = configureStore({ reducer: { filters: filtersReducer } });
+export const store = configureStore({
+  reducer: { filters: filtersReducer, financial: financialReducer },
+});
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();

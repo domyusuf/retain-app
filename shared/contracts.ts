@@ -40,3 +40,27 @@ export interface ApiFailure {
   error: { code: string; message: string };
 }
 export type ExpenseSort = 'date_desc' | 'date_asc' | 'amount_desc' | 'amount_asc';
+
+export type ExpenseInput = Pick<
+  Expense,
+  'title' | 'amountMinor' | 'categoryId' | 'date' | 'paymentMethod' | 'notes'
+>;
+export type BudgetStatus = 'unset' | 'within' | 'approaching' | 'over';
+export interface CategorySpending {
+  categoryId: string;
+  name: string;
+  color: string;
+  amountMinor: number;
+  count: number;
+}
+export interface DashboardSummary {
+  month: string;
+  spentMinor: number;
+  budget: Budget | null;
+  remainingMinor: number | null;
+  budgetStatus: BudgetStatus;
+  expenseCount: number;
+  highestExpense: Expense | null;
+  byCategory: CategorySpending[];
+  recentExpenses: Expense[];
+}

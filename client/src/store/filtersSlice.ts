@@ -44,10 +44,11 @@ const filtersSlice = createSlice({
       state.page = 1;
     },
     setPage(state, action: PayloadAction<number>) {
-      state.page = Math.max(1, Math.trunc(action.payload));
+      state.page = Number.isFinite(action.payload) ? Math.max(1, Math.trunc(action.payload)) : 1;
     },
+    clearExpenseFilters: (state) => ({ ...initialState, month: state.month }),
     resetFilters: () => ({ ...initialState, month: currentMonth() }),
   },
 });
-export const { updateFilters, setPage, resetFilters } = filtersSlice.actions;
+export const { updateFilters, setPage, resetFilters, clearExpenseFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;
