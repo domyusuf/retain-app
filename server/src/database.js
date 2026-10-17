@@ -6,6 +6,7 @@ export function openDatabase(filename = process.env.DATABASE_PATH || './data/ret
   if (filename !== ':memory:') mkdirSync(dirname(resolve(filename)), { recursive: true });
   const db = new DatabaseSync(filename);
   db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;');
+  const schemaVersion = db.prepare('PRAGMA user_version').get().user_version;
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
@@ -66,6 +67,8 @@ export function openDatabase(filename = process.env.DATABASE_PATH || './data/ret
     ['learning', 'Learning', '#6e8b55', 0],
     ['leisure', 'Leisure', '#7c83bc', 0],
   ];
-  for (const category of categories) seed.run(...category, new Date().toISOString());
+  if (schemaVersion === 0) {
+    for (const category of categories) seed.run(...category, new Date().toISOString());
+  }
   return db;
 }

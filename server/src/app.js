@@ -1,4 +1,5 @@
 import express from 'express';
+import { financeRouter } from './finance.js';
 import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { z } from 'zod';
@@ -142,6 +143,8 @@ export function createApp({
       })),
     });
   });
+  app.use(['/api/expenses', '/api/budgets', '/api/dashboard'], authenticated);
+  app.use('/api', financeRouter(db));
   app.use('/api', (req, res) =>
     res
       .status(404)
