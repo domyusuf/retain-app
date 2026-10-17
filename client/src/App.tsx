@@ -4,6 +4,11 @@ import { GuestRoute, ProtectedRoute } from './auth/ProtectedRoute';
 import { useAuth } from './auth/AuthContext';
 import { AuthPage } from './pages/AuthPage';
 import { AccountPage } from './pages/AccountPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { ExpensesPage } from './pages/ExpensesPage';
+import { BudgetPage } from './pages/BudgetPage';
+import { AppLayout } from './components/AppLayout';
+import { clearFinancialData } from './store/financialSlice';
 import { resetFilters } from './store/filtersSlice';
 import { useAppDispatch } from './store';
 
@@ -11,7 +16,10 @@ export default function App() {
   const { user } = useAuth();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(resetFilters());
+    if (!user) {
+      dispatch(resetFilters());
+      dispatch(clearFinancialData());
+    }
   }, [user?.id, dispatch]);
   return (
     <Routes>
@@ -21,7 +29,12 @@ export default function App() {
         <Route path="/signup" element={<AuthPage key="signup" mode="signup" />} />
       </Route>
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<AccountPage />} />
+        <Route element={<AppLayout key={user?.id} />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/budget" element={<BudgetPage />} />
+          <Route path="/account" element={<AccountPage />} />
+        </Route>
       </Route>
       <Route
         path="*"
