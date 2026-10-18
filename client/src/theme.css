@@ -751,8 +751,21 @@ button:disabled {
   font-size: 13px;
   width: 100%;
 }
+.sort-field {
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+.sort-field > span {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 .sort-field select {
+  width: auto;
+  min-width: 0;
+  flex: 1;
   border-radius: 24px;
+  padding-right: 30px;
 }
 .field label,
 .admin-category-form label {
@@ -1284,6 +1297,7 @@ button:disabled {
     gap: 12px;
   }
   .sort-field {
+    width: 100%;
     justify-content: space-between;
   }
   .filter-grid {
