@@ -92,7 +92,10 @@ export function createApp({
         'INSERT INTO users (id, name, email, password_hash, password_salt, created_at) VALUES (?, ?, ?, ?, ?, ?)',
       ).run(id, name, email, hash, salt, new Date().toISOString());
     } catch (error) {
-      if (error.code === 'ERR_SQLITE_ERROR' && /UNIQUE/.test(error.message)) {
+      if (
+        /^(ERR_SQLITE_ERROR|SQLITE_CONSTRAINT)/.test(error.code || '') &&
+        /UNIQUE/.test(error.message)
+      ) {
         return res.status(409).json({
           error: {
             code: 'EMAIL_EXISTS',

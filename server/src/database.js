@@ -1,11 +1,24 @@
 import { DatabaseSync } from 'node:sqlite';
+import LibsqlDatabase from 'libsql';
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-export function openDatabase(filename = process.env.DATABASE_PATH || './data/retain.db') {
-  if (filename !== ':memory:') mkdirSync(dirname(resolve(filename)), { recursive: true });
-  const db = new DatabaseSync(filename);
-  db.exec('PRAGMA foreign_keys = ON; PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;');
+export function openDatabase(filename) {
+  // Explicit filenames keep tests isolated from configured production databases.
+  const remote = filename === undefined && Boolean(process.env.TURSO_DATABASE_URL);
+  const location =
+    filename || process.env.TURSO_DATABASE_URL || process.env.DATABASE_PATH || './data/retain.db';
+  if (remote && (!location.startsWith('libsql://') || !process.env.TURSO_AUTH_TOKEN)) {
+    throw new Error('Turso requires a libsql:// database URL and TURSO_AUTH_TOKEN.');
+  }
+  if (!remote && location !== ':memory:')
+    mkdirSync(dirname(resolve(location)), { recursive: true });
+  const useLibsql = remote || process.env.DATABASE_DRIVER === 'libsql';
+  const db = useLibsql
+    ? new LibsqlDatabase(location, remote ? { authToken: process.env.TURSO_AUTH_TOKEN } : {})
+    : new DatabaseSync(location);
+  db.exec('PRAGMA foreign_keys = ON;');
+  if (!remote) db.exec('PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;');
   const schemaVersion = db.prepare('PRAGMA user_version').get().user_version;
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
