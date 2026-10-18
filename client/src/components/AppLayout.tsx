@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import {
+  ShieldCheck,
   LayoutDashboard,
   ReceiptText,
   Wallet,
@@ -70,6 +71,12 @@ export function AppLayout() {
             <UserRound size={18} />
             Account
           </NavLink>
+          {user.role === 'admin' && (
+            <NavLink to="/admin">
+              <ShieldCheck size={18} />
+              Admin
+            </NavLink>
+          )}
         </nav>
         <div className="sidebar-note">
           <span className="note-dot" />A little clarity,

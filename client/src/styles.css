@@ -1870,3 +1870,133 @@ select,
     margin-top: 4px;
   }
 }
+
+.admin-stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.admin-panel {
+  padding: 24px;
+  margin-bottom: 24px;
+  min-width: 0;
+}
+.admin-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.admin-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line, #e6e9e3);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.admin-list li > * {
+  min-width: 0;
+}
+.admin-list li:last-child {
+  border-bottom: 0;
+}
+.admin-list small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #58665e;
+}
+.admin-actions {
+  display: flex;
+}
+.category-admin-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.category-admin-name i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.admin-category-form {
+  display: grid;
+  gap: 20px;
+}
+.admin-category-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+.admin-category-form input[type='color'] {
+  width: 80px;
+  height: 44px;
+  padding: 4px;
+}
+@media (max-width: 600px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+  .admin-panel {
+    padding: 18px;
+  }
+  .admin-panel .section-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .sidebar nav {
+    overflow-x: auto;
+  }
+  .sidebar nav a {
+    flex-shrink: 0;
+  }
+}
+
+/* Keep supporting text readable on both desktop and narrow screens. */
+.subtle-label,
+.stat-card > p,
+.workspace-footer,
+.optional,
+.budget-footnote,
+.filter-grid .field > span,
+.detail-list dt,
+.month-picker,
+.sort-field,
+.pagination,
+.category-label,
+.mobile-expense-date {
+  font-size: 12px;
+  color: #586653;
+}
+.workspace-page-heading p:last-child,
+.form-intro,
+.empty-state p,
+.small-empty {
+  color: #586653;
+}
+.stat-label {
+  color: #586653;
+  font-size: 12px;
+}
+.stat-featured .stat-label {
+  color: #d6e3cd;
+}
+.stat-featured > p {
+  color: #d6e3cd;
+}
+.section-heading h2 {
+  font-size: 15px;
+}
+.modal .heading-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+@media (max-width: 600px) {
+  .sidebar nav a {
+    font-size: 11px;
+    min-width: 62px;
+    padding: 10px;
+  }
+}

@@ -66,6 +66,16 @@ export const saveBudget = createAsyncThunk(
     return { ownerId, budget };
   },
 );
+export const refreshCategories = createAsyncThunk(
+  'financial/refreshCategories',
+  async (ownerId: string) => {
+    const [categories, expenses] = await Promise.all([
+      apiRequest<{ categories: Category[] }>('/categories'),
+      apiRequest<{ expenses: Expense[] }>('/expenses/all'),
+    ]);
+    return { ownerId, ...categories, ...expenses };
+  },
+);
 const slice = createSlice({
   name: 'financial',
   initialState,
@@ -73,6 +83,11 @@ const slice = createSlice({
     clearFinancialData: () => initialState,
   },
   extraReducers: (builder) => {
+    builder.addCase(refreshCategories.fulfilled, (state, action) => {
+      if (state.ownerId !== action.payload.ownerId) return;
+      state.categories = action.payload.categories;
+      state.expenses = action.payload.expenses;
+    });
     builder.addCase(loadFinancialData.pending, (state, action) => {
       if (state.ownerId !== action.meta.arg) {
         state.expenses = [];

@@ -6,6 +6,7 @@ import { AuthPage } from './pages/AuthPage';
 import { AccountPage } from './pages/AccountPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ExpensesPage } from './pages/ExpensesPage';
+import { AdminPage } from './pages/AdminPage';
 import { BudgetPage } from './pages/BudgetPage';
 import { AppLayout } from './components/AppLayout';
 import { clearFinancialData } from './store/financialSlice';
@@ -34,6 +35,9 @@ export default function App() {
           <Route path="/expenses" element={<ExpensesPage />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route element={<ProtectedRoute role="admin" />}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
         </Route>
       </Route>
       <Route
