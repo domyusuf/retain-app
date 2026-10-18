@@ -55,13 +55,10 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
             <em>Plan your month.</em>
           </h2>
           <p className="story-description">Record expenses, set a budget, and see what’s left.</p>
-          <div className="growth-art" aria-hidden="true">
-            <div className="art-circle" />
-            <div className="art-ground" />
-            <span className="art-leaf leaf-one" />
-            <span className="art-leaf leaf-two" />
-            <span className="art-leaf leaf-three" />
-            <span className="art-stem" />
+          <div className="auth-orbit" aria-hidden="true">
+            <span />
+            <span />
+            <span />
           </div>
         </div>
       </aside>

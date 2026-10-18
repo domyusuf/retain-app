@@ -51,39 +51,38 @@ export function AppLayout() {
       <a href="#workspace-content" className="skip-link">
         Skip to main content
       </a>
-      <aside className="sidebar">
-        <Brand />
-        <nav aria-label="Main navigation">
-          <NavLink to="/dashboard">
-            <LayoutDashboard size={18} />
-            Overview
-          </NavLink>
-          <NavLink to="/expenses">
-            <ReceiptText size={18} />
-            Expenses
-          </NavLink>
-          <NavLink to="/budget">
-            <Wallet size={18} />
-            Budget
-          </NavLink>
-          <NavLink to="/account">
-            <UserRound size={18} />
-            Account
-          </NavLink>
-          {user.role === 'admin' && (
-            <NavLink to="/admin">
-              <ShieldCheck size={18} />
-              Admin
-            </NavLink>
-          )}
-        </nav>
-        <p className="sidebar-currency">Reporting currency: RWF</p>
-      </aside>
       <div className="workspace-body">
         <header className="workspace-header">
-          <div className="compact-brand">
-            <Brand />
+          <div className="header-identity">
+            <span className="avatar" aria-hidden="true">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+            <span>Hello, {user.name.split(' ')[0]}</span>
           </div>
+          <nav className="top-navigation" aria-label="Main navigation">
+            <NavLink to="/dashboard">
+              <LayoutDashboard size={16} />
+              Overview
+            </NavLink>
+            <NavLink to="/expenses">
+              <ReceiptText size={16} />
+              Expenses
+            </NavLink>
+            <NavLink to="/budget">
+              <Wallet size={16} />
+              Budget
+            </NavLink>
+            <NavLink to="/account">
+              <UserRound size={16} />
+              Account
+            </NavLink>
+            {user.role === 'admin' && (
+              <NavLink to="/admin">
+                <ShieldCheck size={16} />
+                Admin
+              </NavLink>
+            )}
+          </nav>
           <div className="workspace-header-actions">
             <button
               className="icon-button"
@@ -94,11 +93,12 @@ export function AppLayout() {
             >
               <RefreshCw size={17} className={status === 'loading' ? 'spin' : ''} />
             </button>
-            <span className="avatar" aria-hidden="true">
-              {user.name.charAt(0).toUpperCase()}
-            </span>
-            <span className="header-name">{user.name}</span>
-            <button className="button subtle" onClick={logout} disabled={loggingOut}>
+            <button
+              className="button subtle signout-button"
+              aria-label={loggingOut ? 'Signing out' : 'Sign out'}
+              onClick={logout}
+              disabled={loggingOut}
+            >
               <LogOut size={16} />
               <span>{loggingOut ? 'Signing out…' : 'Sign out'}</span>
             </button>
@@ -132,7 +132,8 @@ export function AppLayout() {
           )}
         </main>
         <footer className="workspace-footer">
-          <span>© {new Date().getFullYear()} Retain</span>
+          <Brand />
+          <span>RWF · © {new Date().getFullYear()} Retain</span>
         </footer>
       </div>
     </div>

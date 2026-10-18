@@ -1,88 +1,106 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowDownLeft, Plus, ReceiptText, Wallet, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, Plus, ReceiptText, Wallet, TrendingUp } from 'lucide-react';
 import type { Expense } from '../../../shared/contracts';
-import { useAuth } from '../auth/AuthContext';
 import { useAppSelector } from '../store';
 import { selectMonthlySummary } from '../store/selectors';
-import { money, displayMonth } from '../lib/money';
+import { money, displayMonth, displayDate } from '../lib/money';
 import { MonthPicker } from '../components/MonthPicker';
 import { BudgetProgress } from '../components/BudgetProgress';
-import { ExpenseTable } from '../components/ExpenseTable';
 import { ExpenseForm } from '../components/ExpenseForm';
 import { ExpenseDetails } from '../components/ExpenseDetails';
 
 export function DashboardPage() {
-  const { user } = useAuth();
   const summary = useAppSelector(selectMonthlySummary);
   const [form, setForm] = useState<Expense | 'new' | null>(null);
   const [detail, setDetail] = useState<Expense | null>(null);
   const [message, setMessage] = useState('');
   return (
     <>
-      <div className="workspace-page-heading">
+      <div className="workspace-page-heading dashboard-heading">
         <div>
-          <h1>Your spending</h1>
-          <p>
-            Welcome back, {user?.name.split(' ')[0]}. Here’s your summary for{' '}
-            {displayMonth(summary.month)}.
-          </p>
+          <h1>Overview</h1>
+          <p>{displayMonth(summary.month)}</p>
         </div>
-        <div className="heading-actions">
-          <MonthPicker />
-          <button className="button primary" onClick={() => setForm('new')}>
-            <Plus size={17} />
-            Add expense
-          </button>
-        </div>
+        <MonthPicker />
       </div>
       {message && (
         <p className="success-message" role="status">
           {message}
         </p>
       )}
-      <div className="stat-grid">
-        <section className="stat-card stat-featured">
-          <div className="stat-label">
-            Total spent
-            <ArrowDownLeft size={18} />
+      <div className="overview-hero">
+        <section className="surface spending-hero" aria-labelledby="total-spent-title">
+          <div className="hero-topline">
+            <span className="currency-chip">RWF</span>
+            <span className="subtle-label">{displayMonth(summary.month)}</span>
           </div>
-          <strong>{money(summary.spentMinor)}</strong>
-          <p>
-            {summary.expenseCount} {summary.expenseCount === 1 ? 'expense' : 'expenses'} this month
-          </p>
+          <div className="hero-balance">
+            <h2 id="total-spent-title">Total spent</h2>
+            <strong>{money(summary.spentMinor)}</strong>
+            <p>
+              {summary.expenseCount} {summary.expenseCount === 1 ? 'expense' : 'expenses'} this
+              month
+            </p>
+          </div>
+          <div className="hero-actions">
+            <button className="button primary" onClick={() => setForm('new')}>
+              <Plus size={16} />
+              Add expense
+            </button>
+            <Link className="button secondary" to="/expenses">
+              View expenses
+              <ArrowUpRight size={16} />
+            </Link>
+            <span className="hero-arrow" aria-hidden="true">
+              <ArrowUpRight size={30} strokeWidth={1.4} />
+            </span>
+          </div>
         </section>
-        <section className="stat-card">
-          <div className="stat-label">
-            Remaining budget
-            <Wallet size={18} />
+        <section className="balance-hero" aria-labelledby="remaining-budget-title">
+          <div className="balance-topline">
+            <span className="balance-chip">
+              <Wallet size={14} />
+              MONTHLY BUDGET
+            </span>
+            <span className="balance-decoration" aria-hidden="true">
+              ✦
+            </span>
           </div>
-          <strong>
-            {summary.remainingMinor === null ? 'Not set' : money(summary.remainingMinor)}
-          </strong>
-          <p>
-            {summary.budget
-              ? 'After this month’s spending'
-              : 'Set a monthly budget to see what’s left'}
-          </p>
-        </section>
-        <section className="stat-card">
-          <div className="stat-label">
-            Highest expense
-            <TrendingUp size={18} />
+          <div className="hero-balance">
+            <h2 id="remaining-budget-title">Remaining budget</h2>
+            <strong>
+              {summary.remainingMinor === null ? 'Not set' : money(summary.remainingMinor)}
+            </strong>
           </div>
-          <strong>
-            {summary.highestExpense ? money(summary.highestExpense.amountMinor) : 'None yet'}
-          </strong>
-          <p>{summary.highestExpense?.title || 'Add your first expense'}</p>
+          <div className="balance-details">
+            <div>
+              <span>Budget limit</span>
+              <strong>{summary.budget ? money(summary.budget.amountMinor) : 'Not set'}</strong>
+            </div>
+            <div>
+              <span>
+                <TrendingUp size={13} />
+                Highest expense
+              </span>
+              <strong>
+                {summary.highestExpense ? money(summary.highestExpense.amountMinor) : 'None yet'}
+              </strong>
+              <small>{summary.highestExpense?.title || 'No expenses this month'}</small>
+            </div>
+          </div>
         </section>
       </div>
-      <div className="dashboard-grid">
+      <div className="overview-details">
         <BudgetProgress />
         <section className="surface category-spending">
           <div className="section-heading">
-            <h2>Spending by category</h2>
-            <span className="subtle-label">{displayMonth(summary.month)}</span>
+            <h2>
+              <span className="section-icon">
+                <ReceiptText size={16} />
+              </span>
+              Spending by category
+            </h2>
           </div>
           {summary.byCategory.length ? (
             <div className="category-bars">
@@ -103,34 +121,59 @@ export function DashboardPage() {
                       }}
                     />
                   </div>
+                  <small>
+                    {Math.round((category.amountMinor / summary.spentMinor) * 100)}% of spending
+                  </small>
                 </div>
               ))}
             </div>
           ) : (
             <div className="small-empty">
-              <ReceiptText size={26} />
+              <ReceiptText size={28} />
               <p>Add an expense to see your category breakdown.</p>
             </div>
           )}
         </section>
-      </div>
-      <section className="surface recent-expenses">
-        <div className="section-heading">
-          <h2>Recent expenses</h2>
-          <Link className="text-link" to="/expenses">
-            View all expenses →
-          </Link>
-        </div>
-        {summary.recentExpenses.length ? (
-          <ExpenseTable expenses={summary.recentExpenses} onSelect={setDetail} />
-        ) : (
-          <div className="empty-state compact">
-            <ReceiptText size={29} />
-            <h3>No expenses this month.</h3>
-            <p>Add your first expense.</p>
+        <section className="surface recent-expenses recent-card">
+          <div className="section-heading">
+            <h2>
+              <span className="section-icon">
+                <ReceiptText size={16} />
+              </span>
+              Recent expenses
+            </h2>
+            <Link className="icon-button" to="/expenses" aria-label="View all expenses">
+              <ArrowUpRight size={17} />
+            </Link>
           </div>
-        )}
-      </section>
+          {summary.recentExpenses.length ? (
+            <ul className="recent-list">
+              {summary.recentExpenses.map((expense) => (
+                <li key={expense.id}>
+                  <button onClick={() => setDetail(expense)}>
+                    <span className="recent-icon">
+                      <ReceiptText size={16} />
+                    </span>
+                    <span className="recent-description">
+                      <strong>{expense.title}</strong>
+                      <small>{displayDate(expense.date)}</small>
+                    </span>
+                    <span className="recent-amount">{money(expense.amountMinor)}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="small-empty">
+              <ReceiptText size={28} />
+              <p>No expenses this month.</p>
+              <button className="text-button" onClick={() => setForm('new')}>
+                Add your first expense
+              </button>
+            </div>
+          )}
+        </section>
+      </div>
       {detail && (
         <ExpenseDetails
           expense={detail}
