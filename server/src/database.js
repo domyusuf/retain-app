@@ -19,8 +19,15 @@ export function openDatabase(filename) {
     : new DatabaseSync(location);
   db.exec('PRAGMA foreign_keys = ON;');
   if (!remote) db.exec('PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;');
-  const schemaVersion = db.prepare('PRAGMA user_version').get().user_version;
-  db.exec(`
+  // Hosted SQLite disallows assigning PRAGMA user_version. Keep migration state in SQL.
+  const legacyVersion = remote ? 0 : db.prepare('PRAGMA user_version').get().user_version;
+  db.exec('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY)');
+  const schemaVersion =
+    db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get().version ||
+    legacyVersion;
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -66,22 +73,29 @@ export function openDatabase(filename) {
       updated_at TEXT NOT NULL,
       UNIQUE(user_id, month)
     );
-    PRAGMA user_version = 1;
+
   `);
-  const seed = db.prepare(
-    'INSERT OR IGNORE INTO categories (id, name, color, is_default, created_at) VALUES (?, ?, ?, ?, ?)',
-  );
-  const categories = [
-    ['uncategorized', 'Uncategorized', '#6b7280', 1],
-    ['food', 'Food & groceries', '#d49b49', 0],
-    ['transport', 'Transport', '#5e8b91', 0],
-    ['housing', 'Housing & bills', '#9673a6', 0],
-    ['health', 'Health', '#cf7a6f', 0],
-    ['learning', 'Learning', '#6e8b55', 0],
-    ['leisure', 'Leisure', '#7c83bc', 0],
-  ];
-  if (schemaVersion === 0) {
-    for (const category of categories) seed.run(...category, new Date().toISOString());
+    const seed = db.prepare(
+      'INSERT OR IGNORE INTO categories (id, name, color, is_default, created_at) VALUES (?, ?, ?, ?, ?)',
+    );
+    const categories = [
+      ['uncategorized', 'Uncategorized', '#6b7280', 1],
+      ['food', 'Food & groceries', '#d49b49', 0],
+      ['transport', 'Transport', '#5e8b91', 0],
+      ['housing', 'Housing & bills', '#9673a6', 0],
+      ['health', 'Health', '#cf7a6f', 0],
+      ['learning', 'Learning', '#6e8b55', 0],
+      ['leisure', 'Leisure', '#7c83bc', 0],
+    ];
+    if (schemaVersion === 0) {
+      for (const category of categories) seed.run(...category, new Date().toISOString());
+    }
+    db.prepare('INSERT OR IGNORE INTO schema_migrations (version) VALUES (?)').run(1);
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    db.close();
+    throw error;
   }
   return db;
 }
