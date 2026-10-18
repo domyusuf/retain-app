@@ -2,6 +2,12 @@
 
 A personal expense and monthly budget manager built with React, TypeScript, Vite, and an Express API backed by SQLite.
 
+## Live application
+
+[Open Retain](https://retain-app-v5mf.onrender.com)
+
+Hosted on Render Free with a durable Turso database. The first request after inactivity can take around a minute while the free service wakes up.
+
 ## Development
 
 Requires Node.js 24 or later and npm. From the repository root:
@@ -109,7 +115,7 @@ Insights return `userCount`, `expenseCount`, `expenseValueMinor`, `currentMonthE
 
 ## Deployment
 
-Public deployment is pending hosting-account setup; a live URL will be added after verification.
+Production URL: https://retain-app-v5mf.onrender.com. The frontend and API are served from the same HTTPS origin.
 
 The included `render.yaml` configures a free Node web service that serves both the production React build and REST API from one HTTPS origin. Durable data lives in a separate Turso SQLite database, so Render restarts or redeployments do not erase records.
 
