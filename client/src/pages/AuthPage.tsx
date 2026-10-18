@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { ArrowRight, Eye, EyeOff, Leaf, LoaderCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, LoaderCircle } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
 import { useAuth } from '../auth/AuthContext';
@@ -47,16 +47,14 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
       <aside className="auth-story" aria-label="About Retain">
         <Brand light />
         <div className="story-content">
-          <p className="eyebrow">MAKE ROOM FOR WHAT MATTERS</p>
           <h2>
-            A little clarity.
-            <br />A lot more
+            Keep track of
             <br />
-            <em>possibility.</em>
+            your spending.
+            <br />
+            <em>Plan your month.</em>
           </h2>
-          <p className="story-description">
-            Know where your money goes, and feel good about where you’re headed.
-          </p>
+          <p className="story-description">Record expenses, set a budget, and see what’s left.</p>
           <div className="growth-art" aria-hidden="true">
             <div className="art-circle" />
             <div className="art-ground" />
@@ -64,24 +62,19 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
             <span className="art-leaf leaf-two" />
             <span className="art-leaf leaf-three" />
             <span className="art-stem" />
-            <div className="art-tag">
-              <Leaf size={15} /> Small steps. Steady growth.
-            </div>
           </div>
         </div>
-        <p className="story-footer">A calmer way to manage your money.</p>
       </aside>
       <main className="auth-main">
         <div className="mobile-brand">
           <Brand />
         </div>
         <div className="auth-card">
-          <p className="eyebrow muted">YOUR MONEY, YOUR PACE</p>
-          <h1>{signup ? 'Make yourself at home.' : 'Good to see you again.'}</h1>
+          <h1>{signup ? 'Create your account' : 'Welcome back'}</h1>
           <p className="auth-intro">
             {signup
-              ? 'Create your account and start making sense of your spending.'
-              : 'Sign in to find a little more clarity in your everyday spending.'}
+              ? 'Start tracking your expenses and monthly budget.'
+              : 'Sign in to view your expenses and budget.'}
           </p>
           <form onSubmit={submit} className="auth-form">
             {error && (
@@ -99,7 +92,7 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
                   required
                   minLength={2}
                   maxLength={80}
-                  placeholder="What should we call you?"
+                  placeholder="Full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={pending}
@@ -148,11 +141,7 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {signup && (
-                <small id="password-help">
-                  Use 12 or more characters. A memorable phrase works well.
-                </small>
-              )}
+              {signup && <small id="password-help">Use at least 12 characters.</small>}
             </div>
             <button className="button primary auth-submit" type="submit" disabled={pending}>
               {pending ? (
@@ -174,10 +163,6 @@ export function AuthPage({ mode }: { mode: 'signin' | 'signup' }) {
               {signup ? 'Sign in' : 'Create an account'}
             </Link>
           </p>
-          <div className="auth-reassurance">
-            <ShieldCheck size={17} />
-            <span>Your financial space stays yours.</span>
-          </div>
         </div>
         <p className="auth-footer">© {new Date().getFullYear()} Retain</p>
       </main>

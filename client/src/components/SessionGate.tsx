@@ -17,7 +17,7 @@ export function SessionGate() {
         </div>
       ) : (
         <p role="status">
-          <LoaderCircle className="spin" size={20} /> Opening your account…
+          <LoaderCircle className="spin" size={20} /> Loading your account…
         </p>
       )}
     </main>

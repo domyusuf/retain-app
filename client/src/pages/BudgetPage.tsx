@@ -56,11 +56,7 @@ export function BudgetPage() {
     <>
       <div className="workspace-page-heading">
         <div>
-          <p className="eyebrow muted">MAKE ROOM FOR YOUR PLANS</p>
-          <h1>
-            A budget that fits you<span className="accent-dot">.</span>
-          </h1>
-          <p>Give your spending direction, one month at a time.</p>
+          <h1>Your budget</h1>
         </div>
         <MonthPicker disabled={pending} />
       </div>
@@ -69,10 +65,9 @@ export function BudgetPage() {
           <span className="round-icon">
             <Wallet size={26} />
           </span>
-          <h2>{summary.budget ? 'Adjust your monthly plan' : 'Set your monthly plan'}</h2>
+          <h2>{summary.budget ? 'Update budget' : 'Set a budget'}</h2>
           <p className="form-intro">
-            Choose how much you’d like to spend in {displayMonth(summary.month)}. You can change
-            this whenever you need.
+            Set your spending limit for {displayMonth(summary.month)}. You can update it anytime.
           </p>
           <form onSubmit={submit}>
             {error && (
@@ -83,7 +78,7 @@ export function BudgetPage() {
             {saved && (
               <p className="success-message" role="status">
                 <Check size={16} />
-                Your budget has been saved.
+                Budget saved.
               </p>
             )}
             <div className="field">
@@ -110,8 +105,7 @@ export function BudgetPage() {
         <div>
           <BudgetProgress showLink={false} />
           <p className="budget-footnote">
-            Your totals include every expense dated in {displayMonth(summary.month)}, regardless of
-            the filters on your expense list.
+            Totals include all expenses dated in {displayMonth(summary.month)}.
           </p>
         </div>
       </div>

@@ -45,8 +45,8 @@ export default function App() {
         element={
           <main className="not-found">
             <p className="eyebrow muted">404</p>
-            <h1>That page isn’t here.</h1>
-            <p>Let’s get you back to familiar ground.</p>
+            <h1>Page not found</h1>
+            <p>Check the address or return to your dashboard.</p>
             <Link className="button primary" to="/dashboard">
               Back to Retain
             </Link>

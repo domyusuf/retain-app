@@ -768,6 +768,7 @@ button svg {
   margin: 50px 12px 14px;
 }
 .sidebar nav {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -810,7 +811,7 @@ button svg {
 .sidebar-currency {
   font-size: 9px;
   color: #969e8b;
-  margin: 0 12px;
+  margin: auto 12px 0;
 }
 .workspace-body {
   margin-left: 224px;
@@ -834,6 +835,7 @@ button svg {
   color: #85917c;
 }
 .workspace-header-actions {
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1998,5 +2000,11 @@ select,
     font-size: 11px;
     min-width: 62px;
     padding: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar nav {
+    margin-top: 0;
   }
 }

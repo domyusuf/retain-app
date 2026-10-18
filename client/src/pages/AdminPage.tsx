@@ -24,7 +24,9 @@ function CategoryList({ title, items }: { title: string; items: CategorySpending
         {items.map((item) => (
           <li key={item.categoryId}>
             <span>{item.name}</span>
-            <strong>{item.count} expenses</strong>
+            <strong>
+              {item.count} {item.count === 1 ? 'expense' : 'expenses'}
+            </strong>
           </li>
         ))}
       </ul>
@@ -116,11 +118,8 @@ export function AdminPage() {
     <>
       <div className="workspace-page-heading">
         <div>
-          <p className="eyebrow muted">PLATFORM MANAGEMENT</p>
-          <h1>
-            Admin overview<span className="accent-dot">.</span>
-          </h1>
-          <p>Manage shared categories and see activity across Retain.</p>
+          <h1>Admin overview</h1>
+          <p>User activity and shared categories across Retain.</p>
         </div>
         <button
           className="button secondary"
@@ -151,17 +150,14 @@ export function AdminPage() {
             <section className="stat-card">
               <div className="stat-label">Registered users</div>
               <strong>{insights.userCount}</strong>
-              <p>All platform accounts</p>
             </section>
             <section className="stat-card">
               <div className="stat-label">Total expenses</div>
               <strong>{insights.expenseCount}</strong>
-              <p>Across all users</p>
             </section>
             <section className="stat-card">
               <div className="stat-label">Total expense value</div>
               <strong>{money(insights.expenseValueMinor)}</strong>
-              <p>All recorded spending</p>
             </section>
             <section className="stat-card">
               <div className="stat-label">Expenses this month</div>
@@ -242,10 +238,7 @@ export function AdminPage() {
             Add category
           </button>
         </div>
-        <p className="subtle-label">
-          Deleting a category moves its expenses to Uncategorized. Expense amounts and owners stay
-          the same.
-        </p>
+        <p className="subtle-label">Deleted categories’ expenses move to Uncategorized.</p>
         <ul className="admin-list">
           {categories.map((item) => (
             <li key={item.id}>
@@ -337,10 +330,7 @@ export function AdminPage() {
           onClose={() => setDeleting(null)}
           pending={pending}
         >
-          <p>
-            All expenses in this category will move to Uncategorized. This category will be
-            permanently deleted.
-          </p>
+          <p>This category will be permanently deleted. Its expenses will move to Uncategorized.</p>
           {mutationError && (
             <p className="form-error" role="alert">
               {mutationError}

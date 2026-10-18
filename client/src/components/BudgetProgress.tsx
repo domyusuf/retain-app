@@ -13,7 +13,7 @@ export function BudgetProgress({ showLink = true }: { showLink?: boolean }) {
   return (
     <section className="surface budget-progress" aria-labelledby="budget-progress-heading">
       <div className="section-heading">
-        <h2 id="budget-progress-heading">Your monthly budget</h2>
+        <h2 id="budget-progress-heading">Monthly budget</h2>
         <span className={`status-badge ${summary.budgetStatus}`}>
           {labels[summary.budgetStatus]}
         </span>
@@ -43,14 +43,12 @@ export function BudgetProgress({ showLink = true }: { showLink?: boolean }) {
           </div>
           <p className="budget-hint">
             {summary.remainingMinor! < 0
-              ? `${money(-summary.remainingMinor!)} over your budget. You can adjust it as your needs change.`
-              : `${money(summary.remainingMinor!)} left in your plan.`}
+              ? `${money(-summary.remainingMinor!)} over budget.`
+              : `${money(summary.remainingMinor!)} remaining.`}
           </p>
         </>
       ) : (
-        <p className="budget-hint">
-          Give your month a little direction. Set a budget to see how your spending fits your plans.
-        </p>
+        <p className="budget-hint">Set a monthly budget to track your remaining balance.</p>
       )}
       {showLink && (
         <Link className="text-link" to="/budget">

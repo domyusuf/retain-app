@@ -53,7 +53,6 @@ export function AppLayout() {
       </a>
       <aside className="sidebar">
         <Brand />
-        <p className="nav-caption">YOUR SPACE</p>
         <nav aria-label="Main navigation">
           <NavLink to="/dashboard">
             <LayoutDashboard size={18} />
@@ -78,11 +77,6 @@ export function AppLayout() {
             </NavLink>
           )}
         </nav>
-        <div className="sidebar-note">
-          <span className="note-dot" />A little clarity,
-          <br />
-          every day.
-        </div>
         <p className="sidebar-currency">Reporting currency: RWF</p>
       </aside>
       <div className="workspace-body">
@@ -90,7 +84,6 @@ export function AppLayout() {
           <div className="compact-brand">
             <Brand />
           </div>
-          <span className="header-greeting">A fresh perspective on your everyday spending.</span>
           <div className="workspace-header-actions">
             <button
               className="icon-button"
@@ -134,12 +127,11 @@ export function AppLayout() {
           ) : (
             <div className="data-state" role="status">
               <LoaderCircle className="spin" size={25} />
-              <p>Getting your space ready…</p>
+              <p>Loading your data…</p>
             </div>
           )}
         </main>
         <footer className="workspace-footer">
-          <span>A little clarity goes a long way.</span>
           <span>© {new Date().getFullYear()} Retain</span>
         </footer>
       </div>

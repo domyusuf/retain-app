@@ -20,11 +20,7 @@ export function ExpensesPage() {
     <>
       <div className="workspace-page-heading">
         <div>
-          <p className="eyebrow muted">THE EVERYDAY DETAILS</p>
-          <h1>
-            Your expenses<span className="accent-dot">.</span>
-          </h1>
-          <p>Every little record brings the bigger picture into focus.</p>
+          <h1>Your expenses</h1>
         </div>
         <button
           className="button primary"
@@ -49,14 +45,8 @@ export function ExpensesPage() {
         ) : (
           <div className="empty-state">
             <ReceiptText size={30} />
-            <h2>
-              {allCount ? 'No expenses match those filters.' : 'A clearer picture starts here.'}
-            </h2>
-            <p>
-              {allCount
-                ? 'Try a different search or clear your filters.'
-                : 'Add your first expense to start seeing where your money goes.'}
-            </p>
+            <h2>{allCount ? 'No matching expenses.' : 'No expenses yet.'}</h2>
+            {allCount > 0 && <p>Try a different search or clear your filters.</p>}
             {!allCount && (
               <button className="button primary" onClick={() => setForm('new')}>
                 Add your first expense
@@ -66,7 +56,7 @@ export function ExpensesPage() {
         )}
         <div className="pagination">
           <p>
-            {page.start}–{page.end} of {page.total} expenses
+            {page.start}–{page.end} of {page.total} {page.total === 1 ? 'expense' : 'expenses'}
           </p>
           <div>
             <button
@@ -101,7 +91,7 @@ export function ExpensesPage() {
           }}
           onDeleted={() => {
             setDetail(null);
-            setMessage('Expense deleted. Your totals have been updated.');
+            setMessage('Expense deleted.');
           }}
         />
       )}

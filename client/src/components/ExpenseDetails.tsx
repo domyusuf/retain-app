@@ -56,8 +56,7 @@ export function ExpenseDetails({
       )}
       {confirming ? (
         <p className="form-intro">
-          “{expense.title}” ({money(expense.amountMinor)}) will be permanently removed from your
-          spending records.
+          “{expense.title}” ({money(expense.amountMinor)}) will be permanently deleted.
         </p>
       ) : (
         <>

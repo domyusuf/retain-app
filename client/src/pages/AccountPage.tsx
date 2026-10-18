@@ -7,11 +7,7 @@ export function AccountPage() {
     <>
       <div className="workspace-page-heading">
         <div>
-          <p className="eyebrow muted">YOUR RETAIN ACCOUNT</p>
-          <h1>
-            Make yourself at home<span className="accent-dot">.</span>
-          </h1>
-          <p>Your personal space for a clearer view of your money.</p>
+          <h1>Your account</h1>
         </div>
       </div>
       <section className="profile-panel account-profile" aria-labelledby="profile-title">

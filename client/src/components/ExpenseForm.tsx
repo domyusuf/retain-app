@@ -62,8 +62,7 @@ export function ExpenseForm({ expense, onClose }: { expense?: Expense; onClose: 
     }
   }
   return (
-    <Modal title={expense ? 'Edit expense' : 'Add an expense'} onClose={onClose} pending={pending}>
-      <p className="form-intro">A small record today. A clearer picture tomorrow.</p>
+    <Modal title={expense ? 'Edit expense' : 'Add expense'} onClose={onClose} pending={pending}>
       <form onSubmit={submit} className="expense-form">
         {error && (
           <div className="form-error" role="alert">
@@ -147,7 +146,7 @@ export function ExpenseForm({ expense, onClose }: { expense?: Expense; onClose: 
               id="expense-notes"
               rows={3}
               maxLength={2000}
-              placeholder="Anything you’d like to remember"
+              placeholder="Add a note"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />

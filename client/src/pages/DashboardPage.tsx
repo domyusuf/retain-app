@@ -22,13 +22,10 @@ export function DashboardPage() {
     <>
       <div className="workspace-page-heading">
         <div>
-          <p className="eyebrow muted">A LITTLE CLARITY, EVERY DAY</p>
-          <h1>
-            Your money at a glance<span className="accent-dot">.</span>
-          </h1>
+          <h1>Your spending</h1>
           <p>
-            Welcome back, {user?.name.split(' ')[0]}. Here’s how {displayMonth(summary.month)} is
-            looking.
+            Welcome back, {user?.name.split(' ')[0]}. Here’s your summary for{' '}
+            {displayMonth(summary.month)}.
           </p>
         </div>
         <div className="heading-actions">
@@ -65,8 +62,8 @@ export function DashboardPage() {
           </strong>
           <p>
             {summary.budget
-              ? 'Your budget minus this month’s spending'
-              : 'Set a budget to give your month a plan'}
+              ? 'After this month’s spending'
+              : 'Set a monthly budget to see what’s left'}
           </p>
         </section>
         <section className="stat-card">
@@ -75,9 +72,9 @@ export function DashboardPage() {
             <TrendingUp size={18} />
           </div>
           <strong>
-            {summary.highestExpense ? money(summary.highestExpense.amountMinor) : '—'}
+            {summary.highestExpense ? money(summary.highestExpense.amountMinor) : 'None yet'}
           </strong>
-          <p>{summary.highestExpense?.title || 'Your expenses will appear here'}</p>
+          <p>{summary.highestExpense?.title || 'Add your first expense'}</p>
         </section>
       </div>
       <div className="dashboard-grid">
@@ -129,8 +126,8 @@ export function DashboardPage() {
         ) : (
           <div className="empty-state compact">
             <ReceiptText size={29} />
-            <h3>A fresh page for this month.</h3>
-            <p>No expenses recorded in {displayMonth(summary.month)}.</p>
+            <h3>No expenses this month.</h3>
+            <p>Add your first expense.</p>
           </div>
         )}
       </section>
@@ -144,7 +141,7 @@ export function DashboardPage() {
           }}
           onDeleted={() => {
             setDetail(null);
-            setMessage('Expense deleted. Your totals have been updated.');
+            setMessage('Expense deleted.');
           }}
         />
       )}
