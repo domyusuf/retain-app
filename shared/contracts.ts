@@ -64,3 +64,21 @@ export interface DashboardSummary {
   byCategory: CategorySpending[];
   recentExpenses: Expense[];
 }
+
+export type CategoryInput = Pick<Category, 'name' | 'color'>;
+export interface AdminExpense extends Expense {
+  ownerName: string;
+  categoryName: string;
+}
+export interface PlatformInsights {
+  month: string;
+  userCount: number;
+  expenseCount: number;
+  expenseValueMinor: number;
+  currentMonthExpenseCount: number;
+  byCategory: CategorySpending[];
+  mostUsed: CategorySpending[];
+  leastUsed: CategorySpending[];
+  recentExpenses: AdminExpense[];
+  recentUsers: User[];
+}
