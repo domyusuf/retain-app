@@ -1,4 +1,4 @@
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, Search, SlidersHorizontal } from 'lucide-react';
 import type { ExpenseSort, PaymentMethod } from '../../../shared/contracts';
 import { useAppDispatch, useAppSelector } from '../store';
 import { clearExpenseFilters, updateFilters } from '../store/filtersSlice';
@@ -24,16 +24,19 @@ export function ExpenseFilters() {
         </div>
         <label className="sort-field">
           <span>Sort by</span>
-          <select
-            aria-label="Sort expenses"
-            value={filters.sort}
-            onChange={(e) => dispatch(updateFilters({ sort: e.target.value as ExpenseSort }))}
-          >
-            <option value="date_desc">Newest first</option>
-            <option value="date_asc">Oldest first</option>
-            <option value="amount_desc">Amount: high to low</option>
-            <option value="amount_asc">Amount: low to high</option>
-          </select>
+          <span className="sort-select">
+            <select
+              aria-label="Sort expenses"
+              value={filters.sort}
+              onChange={(e) => dispatch(updateFilters({ sort: e.target.value as ExpenseSort }))}
+            >
+              <option value="date_desc">Newest first</option>
+              <option value="date_asc">Oldest first</option>
+              <option value="amount_desc">Amount: high to low</option>
+              <option value="amount_asc">Amount: low to high</option>
+            </select>
+            <ChevronDown size={16} aria-hidden="true" />
+          </span>
         </label>
       </div>
       <details className="filter-details">

@@ -756,16 +756,32 @@ button:disabled {
   flex-shrink: 0;
   min-width: 0;
 }
-.sort-field > span {
+.sort-field > span:first-child {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.sort-field select {
-  width: auto;
-  min-width: 0;
+.sort-select {
+  position: relative;
+  display: block;
   flex: 1;
+  min-width: 0;
+}
+.sort-select > svg {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--ink);
+}
+.sort-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  display: block;
   border-radius: 24px;
-  padding-right: 30px;
+  padding: 11px 44px 11px 16px;
 }
 .field label,
 .admin-category-form label {
